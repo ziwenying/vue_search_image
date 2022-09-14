@@ -1,0 +1,139 @@
+/* reset css */
+body {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+* {
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+i {
+  margin: 0px;
+  padding: 0px;
+}
+
+h1,
+h2 {
+  font-weight: bold;
+}
+h3,
+h4,
+h5 {
+  font-weight: medium;
+}
+h1 {
+  font-size: 68px;
+}
+h2 {
+  font-size: 42px;
+}
+h3 {
+  font-size: 28px;
+}
+h4 {
+  font-size: 24px;
+}
+h5 {
+  font-size: 18px;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+a,
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.btn,
+button,
+button:focus,
+input:focus,
+textarea:focus,
+select,
+select:focus,
+a:focus {
+  outline: 0px !important;
+}
+button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+button[disabled] {
+  pointer-events: none;
+}
+input {
+  padding: 0;
+}
+input:required {
+  box-shadow: none;
+}
+input:invalid {
+  box-shadow: none;
+}
+
+/* basic setting*/
+
+* {
+  --body-bg: #fff;
+  --font: #000;
+  --font-blue: #0b3e71;
+  --font-yellow: #6c5540;
+  --white: #fff;
+  --black: #000;
+  --hover: #ffffff45;
+  --transparent: rgba(255, 255, 255, 0);
+}
+
+*[data-theme="dark"] {
+  --body-bg: #000;
+  --font: #fff;
+  --font-blue: #8b9aa7;
+  --font-yellow: #a7998b;
+  --white: #fff;
+  --black: #000;
+  --hover: #ffffff25;
+  --transparent: rgba(255, 255, 255, 0);
+}
+
+/* color tone */
+$black: #000;
+$white: #fff;
+$yellow: #fcdc00;
+$orange: #fe9200;
+$red: #f44e3b;
+$purple: #7b64ff;
+$magenta: #ab149e;
+$green: #a4dd00;
+$teal: #68ccca;
+$blue: #009ce0;
+
+
+
+a {
+  color: var(--font-blue);
+}
+
+.d-none {
+  display: none;
+}
