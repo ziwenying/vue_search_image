@@ -70,64 +70,49 @@ export default {
     height: 100%;
     background: $black;
     border-radius: 15px;
-    &::before {
-      content: "";
-      display: inline-block;
-      position: absolute;
-      transform: translate(-50%, -50%);
-      top: 50%;
-      left: 50%;
-      padding: 5px;
-      border-radius: 20px;
-      width: 100%;
-      height: 100%;
-      // 動畫
-      animation: spin 2.5s linear infinite;
-      z-index: -1;
-      @keyframes spin {
-        0% {
-          background-image: linear-gradient(
-            90deg,
-            #5ddcff 0%,
-            #3c67e3 50%,
-            #4e00c2 90%
-          );
-        }
-        25% {
-          background-image: linear-gradient(
-            90deg,
-            #5ddcff 10%,
-            #3c67e3 70%,
-            #4e00c2 100%
-          );
-        }
-        50% {
-          background-image: linear-gradient(
-            90deg,
-            #5ddcff 20%,
-            #3c67e3 90%,
-            #4e00c2 100%
-          );
-        }
-        75% {
-          background-image: linear-gradient(
-            90deg,
-            #5ddcff 10%,
-            #3c67e3 70%,
-            #4e00c2 100%
-          );
-        }
-        100% {
-          background-image: linear-gradient(
-            90deg,
-            #5ddcff 0%,
-            #3c67e3 50%,
-            #4e00c2 90%
-          );
-        }
+    animation: spin 2.5s linear infinite;
+    @keyframes spin {
+      0% {
+        background-image: linear-gradient(
+          90deg,
+          #5ddcff 0%,
+          #3c67e3 50%,
+          #4e00c2 90%
+        );
+      }
+      25% {
+        background-image: linear-gradient(
+          90deg,
+          #5ddcff 10%,
+          #3c67e3 70%,
+          #4e00c2 100%
+        );
+      }
+      50% {
+        background-image: linear-gradient(
+          90deg,
+          #5ddcff 20%,
+          #3c67e3 90%,
+          #4e00c2 100%
+        );
+      }
+      75% {
+        background-image: linear-gradient(
+          90deg,
+          #5ddcff 10%,
+          #3c67e3 70%,
+          #4e00c2 100%
+        );
+      }
+      100% {
+        background-image: linear-gradient(
+          90deg,
+          #5ddcff 0%,
+          #3c67e3 50%,
+          #4e00c2 90%
+        );
       }
     }
-
     .color-tone-title {
       display: inline-block;
       padding: 5px 0 0 0;
@@ -201,63 +186,6 @@ export default {
     height: 100%;
     background: $black;
     border-radius: 15px;
-    &::before {
-      content: "";
-      display: inline-block;
-      position: absolute;
-      transform: translate(-50%, -50%);
-      top: 50%;
-      left: 50%;
-      padding: 5px;
-      border-radius: 20px;
-      width: 100%;
-      height: 100%;
-      // 動畫
-      animation: spin 2.5s linear infinite;
-      z-index: -1;
-      @keyframes spin {
-        0% {
-          background-image: linear-gradient(
-            90deg,
-            #5ddcff 0%,
-            #3c67e3 50%,
-            #4e00c2 90%
-          );
-        }
-        25% {
-          background-image: linear-gradient(
-            90deg,
-            #5ddcff 10%,
-            #3c67e3 70%,
-            #4e00c2 100%
-          );
-        }
-        50% {
-          background-image: linear-gradient(
-            90deg,
-            #5ddcff 20%,
-            #3c67e3 90%,
-            #4e00c2 100%
-          );
-        }
-        75% {
-          background-image: linear-gradient(
-            90deg,
-            #5ddcff 10%,
-            #3c67e3 70%,
-            #4e00c2 100%
-          );
-        }
-        100% {
-          background-image: linear-gradient(
-            90deg,
-            #5ddcff 0%,
-            #3c67e3 50%,
-            #4e00c2 90%
-          );
-        }
-      }
-    }
     .sort-panel-title {
       display: inline-block;
       padding: 5px 0 0 0;
@@ -284,8 +212,6 @@ export default {
     }
   }
 }
-
-/* mobile */
 @media screen and (min-width: 767px) {
 }
 </style>

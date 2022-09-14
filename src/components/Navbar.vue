@@ -5,10 +5,10 @@
     </router-link>
 
     <div class="search">
-      <input class="searcher" type="text">
+      <input v-model="keyword" @keyup.enter="afterClickSearch" class="searcher" type="text">
       <div class="icon-wrapper">
-        <i class="fas fa-times deleted"></i>
-        <i class="fas fa-search"></i>
+        <i @click="clear" class="fas fa-times deleted"></i>
+        <i @click.prevent.stop="afterClickSearch"  class="fas fa-search"></i>
       </div>
     </div>
     <label for="toggle-btn" class="hamburger-icon">
@@ -54,10 +54,24 @@
 export default {
   name: "Navbar",
   data() {
-    return {};
+    return {
+      keyword: "",
+    };
   },
   methods: {
-    toggleMode() {},
+    afterClickSearch() {
+      this.keyword = this.keyword.trim(" ").toLowerCase().replace(" ", ",");
+      if (!this.keyword) {
+        alert(`請輸入關鍵字`);
+      }
+      this.$emit("after-click-search", this.keyword);
+    },
+    clear() {
+      this.keyword = "";
+    },
+    toggleMode() {
+      this.$store.commit("changeMode");
+    },
   },
 };
 </script>
@@ -94,7 +108,9 @@ export default {
 
     .searcher {
       width: 70%;
+      background: var(--transparent);
       border: none;
+      color: var(--font-yellow);
     }
 
     .icon-wrapper {
@@ -125,6 +141,7 @@ export default {
     transform: scale(1, 0);
     text-align: center;
     width: 100%;
+    color: var(--font-blue);
     background: var(--body-bg);
     z-index: 1;
 
@@ -197,19 +214,10 @@ export default {
     justify-content: center;
     position: sticky;
     top: 0;
-    .logo {
-      .logo-img {
-      }
-    }
 
     .search {
       margin: 0;
       width: 50%;
-      .searcher {
-      }
-
-      .fa-search {
-      }
     }
 
     .hamburger-icon {
@@ -258,7 +266,6 @@ export default {
     }
 
     .cp-logo {
-      // display: block;
       position: absolute;
       top: 100%;
       left: 50%;

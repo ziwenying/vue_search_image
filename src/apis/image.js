@@ -9,6 +9,9 @@ export default {
     getRandomImages() {
       return apiHelper.get(`photos/random?client_id=${myAccessKey}&count=30`)
     },
+    searchImages({ keyword, page }) {
+      return apiHelper.get(`/search/photos/?client_id=${myAccessKey}&page=${page}&per_page=30&query=${keyword}`)
+    },
   }
 }
 

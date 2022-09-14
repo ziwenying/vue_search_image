@@ -19,12 +19,7 @@ export default {
   data() {
     return {};
   },
-  methods: {
-    // async handleSubmit() {
-    //   try {
-    //   } catch (error) {}
-    // },
-  },
+  methods: {},
 };
 </script>
 
@@ -35,8 +30,4 @@ export default {
   max-width: 1140px;
   margin: 0 auto;
 }
-// @media screen and (min-width: px) {
-//   .main-container {
-// }
-// }
 </style>
