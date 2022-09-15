@@ -86,7 +86,7 @@ export default {
   height: 95px;
   color: var(--font-blue);
   background: var(--body-bg);
-  z-index: 1;
+  z-index: 2;
 
   .logo {
     margin: 0 10px;

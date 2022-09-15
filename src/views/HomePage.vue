@@ -11,24 +11,30 @@
       <div class="column">
         <div v-for="image in firstColumnImg" :key="image.id" class="img-outer">
           <img :src="image.regular" alt="image" class="image" />
+          <i class="icon white far fa-heart"></i>
+          <!-- <i class="icon red fas fa-heart"></i> -->
           <div class="description">
-            <p class="text">{{ image.createdAt }}</p>
+            <p class="text">{{ image.createdAt | fromNow }}</p>
           </div>
         </div>
       </div>
       <div class="column">
         <div v-for="image in secondColumnImg" :key="image.id" class="img-outer">
           <img :src="image.regular" alt="image" class="image" />
+          <i class="icon white far fa-heart"></i>
+          <!-- <i class="icon red fas fa-heart"></i> -->
           <div class="description">
-            <p class="text">{{ image.createdAt }}</p>
+            <p class="text">{{ image.createdAt | fromNow }}</p>
           </div>
         </div>
       </div>
       <div class="column">
         <div v-for="image in thirdColumnImg" :key="image.id" class="img-outer">
           <img :src="image.regular" alt="image" class="image" />
+          <i class="icon white far fa-heart"></i>
+          <!-- <i class="icon red fas fa-heart"></i> -->
           <div class="description">
-            <p class="text">{{ image.createdAt }}</p>
+            <p class="text">{{ image.createdAt | fromNow }}</p>
           </div>
         </div>
       </div>
@@ -46,8 +52,11 @@ import SearchNavPills from "../components/SearchNavPills.vue";
 import Footer from "../components/Footer.vue";
 import imagesAPI from "./../apis/image";
 
+import { fromNowFilter } from "./../utils/mixins";
+
 export default {
   name: "HomePage",
+  mixins: [fromNowFilter],
   components: {
     Navbar,
     SearchNavPills,
@@ -204,16 +213,33 @@ export default {
         position: relative;
         width: 100%;
         height: 100%;
+        border: 5px var(--transparent) solid;
         .image {
           cursor: zoom-in;
         }
-
+        .icon {
+          position: absolute;
+          bottom: 5px;
+          right: 10px;
+          padding: 1px;
+          cursor: pointer;
+          z-index: 1;
+          &.red {
+            color: $red;
+          }
+          &.white {
+            color: $white;
+          }
+        }
         .description {
           position: absolute;
           bottom: 0;
           display: none;
           .text {
-            text-align: center;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 0);
             line-height: 30px;
             color: var(--white);
             text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff,
@@ -229,9 +255,9 @@ export default {
       .description {
         display: block;
         width: 100%;
-        height: 30px;
+        height: 100%;
         background: var(--black);
-        opacity: 0.75;
+        opacity: 0.4;
       }
     }
   }

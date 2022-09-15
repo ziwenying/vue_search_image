@@ -70,7 +70,7 @@ export default {
     height: 100%;
     background: $black;
     border-radius: 15px;
-    animation: spin 2.5s linear infinite;
+    animation: spin 3s linear infinite;
     @keyframes spin {
       0% {
         background-image: linear-gradient(
