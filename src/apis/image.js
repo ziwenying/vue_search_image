@@ -12,6 +12,9 @@ export default {
     searchImages({ keyword, page }) {
       return apiHelper.get(`/search/photos/?client_id=${myAccessKey}&page=${page}&per_page=30&query=${keyword}`)
     },
+    searchImagesColorSort({ keyword, page, color, sort }) {
+      return apiHelper.get(`/search/photos/?client_id=${myAccessKey}&page=${page}&per_page=30&query=${keyword}&color=${color}&order_by=${sort}`)
+    },
   }
 }
 

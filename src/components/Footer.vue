@@ -21,7 +21,7 @@ export default {
   position: absolute;
   bottom: 0;
   width: 100%;
-  color: var(--font);
+  color: $purple;
   background: var(--body-bg);
   .footer-text {
     margin: 5px 20px;
