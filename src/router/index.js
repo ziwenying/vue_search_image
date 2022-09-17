@@ -22,6 +22,11 @@ const routes = [
     component: () => import('../views/AboutPage.vue')
   },
   {
+    path: '/favorite',
+    name: 'favorite-page',
+    component: () => import('../views/FavoritePage.vue')
+  },
+  {
     path: '*',
     name: 'not-found',
     component: NotFound

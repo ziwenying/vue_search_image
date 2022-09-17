@@ -4,7 +4,7 @@
       <img class="logo-img" src="~@/assets/image/ziwen-nobk.png" alt="logo">
     </router-link>
 
-    <div class="search">
+    <div v-if="$route.name === 'home-page' || $route.name === 'root' || $route.name === 'not-found'" class="search">
       <input v-model="keyword" @keyup.enter="afterClickSearch" class="searcher" type="text">
       <div class="icon-wrapper">
         <i @click="clear" class="fas fa-times deleted"></i>
@@ -37,6 +37,9 @@
         </ul>
         </p>
       </li>
+      <li class="item favorite">
+        <router-link :to="{name: 'favorite-page'}" class="item-link">Favorite</router-link>
+      </li>
       <li class="item item-icon">
         <i class="icon fa fa-facebook"></i>
         <i class="icon fa fa-instagram"></i>
@@ -63,14 +66,20 @@ export default {
       this.keyword = this.keyword.trim(" ").toLowerCase().replace(" ", ",");
       if (!this.keyword) {
         alert(`請輸入關鍵字`);
+        this.$emit("fetch-random-image");
       }
-      this.$emit("after-click-search", this.keyword);
+      this.$emit("after-click-search", {
+        color: "black_and_white",
+        sort: "",
+        page: 1,
+        keyword: this.keyword,
+      });
     },
     clear() {
       this.keyword = "";
     },
     toggleMode() {
-      this.$store.commit("changeMode");
+      this.$store.commit("changeMode", "clickNav");
     },
   },
 };
@@ -146,7 +155,7 @@ export default {
     z-index: 1;
 
     .item {
-      padding: 10px 30px;
+      padding: 10px 20px;
 
       .item-link {
         color: var(--font-blue);
@@ -186,12 +195,16 @@ export default {
       }
     }
 
+    .item.favorite {
+      padding: 90px 30px 10px 30px;
+    }
+
     .item-icon {
       margin: 10px 0 0 0;
-      padding: 60px 0 10px 0;
+      padding: 10px 0 20px 0;
 
       .icon {
-        margin: 5px;
+        margin: 5px 10px;
         &:hover {
           color: var(--font-yellow);
           cursor: pointer;
@@ -254,6 +267,10 @@ export default {
             border-radius: 10px;
           }
         }
+      }
+
+      .item.favorite {
+        padding: 10px 30px;
       }
 
       .item-icon {
