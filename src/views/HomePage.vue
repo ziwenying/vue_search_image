@@ -18,6 +18,7 @@
       <!-- v-for -->
       <div class="column">
         <div v-for="image in firstColumnImg" :key="image.id" class="img-outer">
+          <div @click.stop="showImage(image)" class="blank"></div>
           <img :src="image.regular" alt="image" class="image" />
           <i
             v-if="image.isFavorite === false"
@@ -36,6 +37,7 @@
       </div>
       <div class="column">
         <div v-for="image in secondColumnImg" :key="image.id" class="img-outer">
+          <div @click.stop="showImage(image)" class="blank"></div>
           <img :src="image.regular" alt="image" class="image" />
           <i
             v-if="image.isFavorite === false"
@@ -54,6 +56,7 @@
       </div>
       <div class="column">
         <div v-for="image in thirdColumnImg" :key="image.id" class="img-outer">
+          <div @click.stop="showImage(image)" class="blank"></div>
           <img :src="image.regular" alt="image" class="image" />
           <i
             v-if="image.isFavorite === false"
@@ -427,6 +430,14 @@ export default {
         title: "刪除囉！",
       });
     },
+    showImage(oneImage) {
+      this.$store.commit("getOneImage", oneImage);
+      // open new page
+      let routeUrl = this.$router.resolve({
+        path: `/favorite/${oneImage.id}`,
+      });
+      window.open(routeUrl.href, "_blank");
+    },
     saveStorage() {
       localStorage.setItem("STORAGE_Img", JSON.stringify(this.favoriteImages));
     },
@@ -462,7 +473,6 @@ export default {
     left: 50%;
     transform: translate(-50%, 0);
   }
-
   .img-wrapper {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -479,6 +489,7 @@ export default {
       grid-template-columns: minmax(0, 1fr);
       align-items: start;
       row-gap: 5px;
+
       .img-outer {
         position: relative;
         width: 100%;
@@ -488,6 +499,14 @@ export default {
 
         .image {
           border-radius: 2px;
+        }
+        .blank {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
         }
         .icon {
           position: absolute;
@@ -507,6 +526,7 @@ export default {
           position: absolute;
           bottom: 0;
           display: none;
+
           .text {
             position: absolute;
             bottom: 0;
@@ -521,16 +541,15 @@ export default {
         }
       }
     }
-
     .observer {
       width: 50px;
       height: 50px;
     }
-
     .img-outer:hover {
       border: 5px #efceff79 solid;
       border-radius: 5px;
       cursor: zoom-in;
+
       .description {
         display: block;
         width: 100%;
@@ -540,13 +559,11 @@ export default {
       }
     }
   }
-
   .scrollbar {
     &::-webkit-scrollbar {
       width: 0px;
     }
   }
-
   #go-top {
     position: fixed;
     right: 20px;
@@ -568,6 +585,7 @@ export default {
     }
   }
 }
+
 @media screen and (min-width: 767px) {
   .main-container {
     .img-wrapper {

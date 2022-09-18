@@ -19,6 +19,7 @@ export default {
   width: 100%;
   color: $purple;
   background: var(--body-bg);
+
   .footer-text {
     padding: 10px 0 0 0;
     text-align: center;

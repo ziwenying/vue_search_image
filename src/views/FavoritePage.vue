@@ -14,6 +14,7 @@
       <!-- v-for -->
       <div class="column">
         <div v-for="image in favoriteImages" :key="image.id" class="img-outer">
+          <div @click.stop="showImage(image)" class="blank"></div>
           <img :src="image.regular" alt="image" class="image" />
           <i
             v-if="image.isFavorite === false"
@@ -32,7 +33,6 @@
       </div>
     </main>
     <Footer class="footer" />
-    <ImgModal />
     <a v-if="!noImg" id="go-top" @click="goTop">
       <img class="arrow" src="@/assets/image/icon-gotop.png" alt="go-top" />
     </a>
@@ -43,7 +43,6 @@
 import Spinner from "../components/Spinner.vue";
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
-import ImgModal from "../components/ImgModal.vue";
 
 import { Toast } from "./../utils/helpers";
 import { mapState } from "vuex";
@@ -56,7 +55,6 @@ export default {
     Spinner,
     Navbar,
     Footer,
-    ImgModal,
   },
   computed: {
     ...mapState(["darkMode"]),
@@ -132,6 +130,14 @@ export default {
         }
       });
     },
+    showImage(oneImage) {
+      this.$store.commit("getOneImage", oneImage);
+      // open new page
+      let routeUrl = this.$router.resolve({
+        path: `/favorite/${oneImage.id}`,
+      });
+      window.open(routeUrl.href, "_blank");
+    },
     saveStorage() {
       localStorage.setItem("STORAGE_Img", JSON.stringify(this.favoriteImages));
     },
@@ -160,6 +166,7 @@ export default {
   max-width: 1140px;
   margin: 0 auto;
   background: var(--body-bg);
+
   .spinner {
     position: absolute;
     top: 50%;
@@ -183,15 +190,24 @@ export default {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       row-gap: 24px;
+
       .img-outer {
         position: relative;
         width: 100%;
         height: 100%;
         border: 5px var(--transparent) solid;
         border-radius: 5px;
+
         .image {
           border-radius: 2px;
-          cursor: zoom-in;
+        }
+        .blank {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
         }
         .icon {
           position: absolute;
@@ -200,6 +216,7 @@ export default {
           padding: 1px;
           cursor: pointer;
           z-index: 1;
+
           &.red {
             color: $red;
           }
@@ -225,10 +242,11 @@ export default {
         }
       }
     }
-
     .img-outer:hover {
       border: 5px #efceff79 solid;
       border-radius: 5px;
+      cursor: zoom-in;
+
       .description {
         display: block;
         width: 100%;
@@ -243,7 +261,6 @@ export default {
       width: 0px;
     }
   }
-
   #go-top {
     position: fixed;
     right: 20px;
@@ -255,6 +272,7 @@ export default {
     opacity: 0.3;
     z-index: 99;
     transition: all 0.5s;
+
     .arrow {
       margin: 5px;
       width: 50px;
@@ -265,6 +283,7 @@ export default {
     }
   }
 }
+
 @media screen and (min-width: 767px) {
   .main-container {
     .img-wrapper {

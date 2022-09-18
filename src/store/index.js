@@ -7,11 +7,27 @@ export default new Vuex.Store({
   state: {
     darkMode: false,
     colorChose: "",
-    sortChose: ""
+    sortChose: "",
+    showImg: {
+      id: -1,
+      createdAt: "",
+      likeCounts: 0,
+      regular: "",
+      small: "",
+      isFavorite: false,
+    }
   },
   getters: {
   },
   mutations: {
+    getOneImage(state, oneImage) {
+      if (!oneImage.id) {
+        state.showImg = JSON.parse(localStorage.getItem("STORAGE_showImg"))
+      } else if (oneImage.id) {
+        state.showImg = oneImage
+        localStorage.setItem("STORAGE_showImg", JSON.stringify(oneImage));
+      }
+    },
     changeMode(state, clickEl) {
       const footer = document.querySelector('footer')
       const nav = document.querySelector('nav')
@@ -38,6 +54,10 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    visitImagePage({ commit }) {
+      const getImage = JSON.parse(localStorage.getItem('STORAGE_showImg'))
+      commit('getOneImage', getImage)
+    }
   },
   modules: {
   }

@@ -109,6 +109,7 @@ export default {
       }
     }
   }
+
   .scrollbar {
     &::-webkit-scrollbar {
       width: 0px;

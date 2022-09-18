@@ -164,6 +164,7 @@ export default {
   margin-top: 20px;
   width: 80%;
   text-align: center;
+
   .color-tone {
     position: relative;
     width: 100%;
@@ -171,6 +172,7 @@ export default {
     background: $black;
     border-radius: 15px;
     animation: spin 3s linear infinite;
+
     @keyframes spin {
       0% {
         background-image: linear-gradient(
@@ -225,6 +227,7 @@ export default {
       grid-template-columns: repeat(auto-fill, minmax(0, 20px));
       grid-gap: 1rem;
       padding: 5px 28%;
+
       .color-wrapper {
         padding: 3px;
         width: 22px;
@@ -287,7 +290,6 @@ export default {
       }
     }
   }
-
   .sort-panel {
     position: relative;
     margin: 15px 0 0 0;
@@ -305,6 +307,7 @@ export default {
       display: flex;
       justify-content: center;
       padding: 5px 0 10px 0;
+
       .sort-way {
         margin: 0 5px 0 0;
         padding: 5px;
@@ -320,12 +323,9 @@ export default {
       }
     }
   }
-
   .sort-select {
     background: var(--hover);
     color: $white;
   }
-}
-@media screen and (min-width: 767px) {
 }
 </style>
