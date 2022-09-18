@@ -40,7 +40,7 @@
         </li>
       </ul>
     </main>
-    <Footer />
+    <Footer class="footer" />
   </div>
 </template>
 
@@ -106,6 +106,10 @@ export default {
         }
       }
     }
+  }
+  .footer {
+    position: absolute;
+    bottom: 0;
   }
 }
 </style>

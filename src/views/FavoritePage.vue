@@ -7,6 +7,10 @@
       style="scroll-behavior: smooth"
       ref="infinite_list"
     >
+      <h2 v-if="noImg" class="no-image">還沒有收藏唷！</h2>
+      <h4 v-if="noImg" class="no-image">
+        快將喜歡的圖片加入收藏吧 (੭ु´͈ ᐜ `͈)੭ु⁾⁾
+      </h4>
       <!-- v-for -->
       <div class="column">
         <div v-for="image in favoriteImages" :key="image.id" class="img-outer">
@@ -27,9 +31,9 @@
         </div>
       </div>
     </main>
-    <Footer />
+    <Footer class="footer" />
     <ImgModal />
-    <a id="go-top" @click="goTop">
+    <a v-if="!noImg" id="go-top" @click="goTop">
       <img class="arrow" src="@/assets/image/icon-gotop.png" alt="go-top" />
     </a>
   </div>
@@ -41,6 +45,7 @@ import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import ImgModal from "../components/ImgModal.vue";
 
+import { Toast } from "./../utils/helpers";
 import { mapState } from "vuex";
 import { fromNowFilter } from "./../utils/mixins";
 
@@ -60,30 +65,78 @@ export default {
     return {
       favoriteImages: [],
       keyword: "",
+      noImg: true,
+      isLoading: true,
     };
   },
   created() {
-    this.favoriteImages = JSON.parse(localStorage.getItem("STORAGE_Img")) || [];
+    this.fetchFavoriteImg();
   },
   mounted() {
     if (this.darkMode) {
       this.toggleMode();
     }
   },
+  watch: {
+    favoriteImages() {
+      this.saveStorage();
+    },
+  },
   methods: {
+    fetchFavoriteImg() {
+      this.isLoading = true;
+      this.favoriteImages =
+        JSON.parse(localStorage.getItem("STORAGE_Img")) || [];
+      this.isLoading = false;
+      if (!this.favoriteImages.length) {
+        console.log(true);
+        this.noImg = true;
+      } else {
+        this.noImg = false;
+      }
+    },
     addFavorite(imageId) {
+      console.log("to", Toast);
+      console.log("ob", { Toast });
       this.favoriteImages = this.favoriteImages.map((fa_image) => {
         return fa_image.id === imageId
           ? { ...fa_image, isFavorite: true }
           : fa_image;
       });
-    },
-    deleteFavorite(imageId) {
-      this.favoriteImages = this.favoriteImages.map((fa_image) => {
-        return fa_image.id === imageId
-          ? { ...fa_image, isFavorite: false }
-          : fa_image;
+      Toast.fire({
+        icon: "success",
+        title: "加入囉！",
       });
+    },
+    async deleteFavorite(imageId) {
+      Toast.fire({
+        title: "確定要刪除檔案?",
+        icon: "warning",
+        showConfirmButton: true,
+        confirmButtonColor: "#d33",
+        confirmButtonText: "是的，我要刪除!",
+        showCancelButton: true,
+        cancelButtonColor: "#444444",
+        cancelButtonText: "取消",
+      }).then((result) => {
+        if (result.value) {
+          this.favoriteImages = this.favoriteImages.map((fa_image) => {
+            return fa_image.id === imageId
+              ? { ...fa_image, isFavorite: false }
+              : fa_image;
+          });
+          this.favoriteImages = this.favoriteImages.filter((fa_image) => {
+            return fa_image.id !== imageId;
+          });
+          Toast.fire({
+            icon: "success",
+            title: "刪除囉！",
+          });
+        }
+      });
+    },
+    saveStorage() {
+      localStorage.setItem("STORAGE_Img", JSON.stringify(this.favoriteImages));
     },
     goTop() {
       const scrollTop = this.$refs.infinite_list;
@@ -121,6 +174,13 @@ export default {
     background: var(--transparent);
     overflow-y: scroll;
     max-height: 914px;
+
+    .no-image {
+      text-align: center;
+      height: 200px;
+      color: var(--font-blue);
+      margin: 5px;
+    }
 
     .column {
       display: grid;
@@ -194,6 +254,7 @@ export default {
     border: 1px var(--font-blue) solid;
     border-radius: 50px;
     background: $white;
+    cursor: pointer;
     opacity: 0.3;
     z-index: 99;
     transition: all 0.5s;
@@ -206,6 +267,11 @@ export default {
       opacity: 1;
     }
   }
+
+  // .footer {
+  //   position: absolute;
+  //   bottom: 0;
+  // }
 }
 @media screen and (min-width: 767px) {
   .main-container {

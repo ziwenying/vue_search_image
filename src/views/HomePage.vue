@@ -87,6 +87,7 @@ import SearchNavPills from "../components/SearchNavPills.vue";
 import Footer from "../components/Footer.vue";
 import imagesAPI from "./../apis/image";
 
+import { Toast } from "./../utils/helpers";
 import { mapState } from "vuex";
 import { fromNowFilter } from "./../utils/mixins";
 
@@ -274,7 +275,10 @@ export default {
         });
 
         if (this.allImages.length === 0) {
-          alert("沒有符合條件的圖片，請重新搜尋");
+          Toast.fire({
+            icon: "warning",
+            title: "沒有符合條件的圖片，請重新搜尋",
+          });
         }
 
         // 新撈的圖全部加上 isFavorite: false
@@ -299,7 +303,6 @@ export default {
         }
 
         // assign images
-
         if (!reload) {
           this.firstColumnImg = [];
           this.secondColumnImg = [];
@@ -329,7 +332,10 @@ export default {
         this.isLoading = false;
       } catch (error) {
         this.isLoading = false;
-        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得圖片，請稍後再試",
+        });
       }
     },
     addFavorite(image, columnIndex) {
@@ -366,13 +372,19 @@ export default {
       );
 
       if (filterFavoriteImages) {
-        alert("已經存在最愛清單中");
+        Toast.fire({
+          icon: "error",
+          title: "已經存在收藏清單，請點選其它圖片",
+        });
       } else {
         this.favoriteImages = [
           ...this.favoriteImages,
           { ...image, isFavorite: true },
         ];
-        alert("加入囉");
+        Toast.fire({
+          icon: "success",
+          title: "加入囉！",
+        });
       }
     },
     deleteFavorite(imageId, columnIndex) {
@@ -405,7 +417,10 @@ export default {
             : thirdImage;
         });
       }
-      alert("刪除囉");
+      Toast.fire({
+        icon: "success",
+        title: "刪除囉！",
+      });
     },
     saveStorage() {
       localStorage.setItem("STORAGE_Img", JSON.stringify(this.favoriteImages));
@@ -531,6 +546,7 @@ export default {
     border: 1px var(--font-blue) solid;
     border-radius: 50px;
     background: $white;
+    cursor: pointer;
     opacity: 0.3;
     z-index: 99;
     transition: all 0.5s;
