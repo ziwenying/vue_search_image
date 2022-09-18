@@ -43,7 +43,7 @@
 5. 打包專案
    npm run build
 
-# 【採用】
+## 【採用】
 
 1. vue2
 2. vuex
