@@ -140,14 +140,14 @@ export default {
       const imageContainer = this.$refs.infinite_list;
       const loadingObserver = this.$refs.observer;
 
-      // 設定在什麼情況下觸發 callback 函式
+      // 觸發 callback 函式的條件
       const options = {
         root: imageContainer,
         rootMargin: "0px 0px 200px 0px",
         threshold: 0,
       };
 
-      // callback 函式
+      // callback
       const callback = ([entry]) => {
         if (entry && entry.isIntersecting) {
           if (!this.keyword) {
@@ -167,7 +167,7 @@ export default {
         }
       };
 
-      // 創建一個 observer
+      // build observer
       let observer = new IntersectionObserver(callback, options);
 
       // 觀察目標元素
@@ -197,7 +197,8 @@ export default {
             isFavorite: false,
           };
         });
-        // 確認新撈的圖有無加入最愛
+
+        // 確認新撈的圖有無加入收藏
         if (this.favoriteImages.length) {
           for (let i = 0; i < this.favoriteImages.length; i++) {
             this.allImages = this.allImages.map((image) => {
@@ -210,6 +211,7 @@ export default {
             });
           }
         }
+
         // assign images
         this.firstColumnImg = [
           ...this.firstColumnImg,
@@ -232,7 +234,10 @@ export default {
         this.isLoading = false;
       } catch (error) {
         this.isLoading = false;
-        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得圖片，請稍後再試",
+        });
       }
     },
     async searchColorSort({ color, sort, page, keyword }, reload) {
@@ -288,7 +293,7 @@ export default {
             isFavorite: false,
           };
         });
-        // 確認新撈的圖有無加入最愛
+        // 確認新撈的圖有無加入收藏
         if (this.favoriteImages.length) {
           for (let i = 0; i < this.favoriteImages.length; i++) {
             this.allImages = this.allImages.map((image) => {
@@ -394,7 +399,7 @@ export default {
           ? { ...fa_image, isFavorite: false }
           : { ...fa_image };
       });
-      // 從最愛中刪除
+      // 從收藏中刪除
       this.favoriteImages = this.favoriteImages.filter((fa_image) => {
         return fa_image.id !== imageId;
       });
@@ -450,16 +455,18 @@ export default {
   max-width: 1140px;
   margin: 0 auto;
   background: var(--body-bg);
+
   .spinner {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, 0);
   }
+
   .img-wrapper {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-column-gap: 24px;
+    grid-column-gap: 5px;
     text-align: center;
     margin: 30px auto 0 auto;
     padding: 20px 0 60px 0;
@@ -471,7 +478,7 @@ export default {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       align-items: start;
-      row-gap: 24px;
+      row-gap: 5px;
       .img-outer {
         position: relative;
         width: 100%;
@@ -533,6 +540,7 @@ export default {
       }
     }
   }
+
   .scrollbar {
     &::-webkit-scrollbar {
       width: 0px;
@@ -565,6 +573,11 @@ export default {
     .img-wrapper {
       margin: 50px auto 0 auto;
       width: 95%;
+      grid-column-gap: 24px;
+
+      .column {
+        row-gap: 24px;
+      }
     }
   }
 }

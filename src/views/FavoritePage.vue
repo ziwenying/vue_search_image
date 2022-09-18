@@ -89,15 +89,12 @@ export default {
         JSON.parse(localStorage.getItem("STORAGE_Img")) || [];
       this.isLoading = false;
       if (!this.favoriteImages.length) {
-        console.log(true);
         this.noImg = true;
       } else {
         this.noImg = false;
       }
     },
     addFavorite(imageId) {
-      console.log("to", Toast);
-      console.log("ob", { Toast });
       this.favoriteImages = this.favoriteImages.map((fa_image) => {
         return fa_image.id === imageId
           ? { ...fa_image, isFavorite: true }
@@ -267,11 +264,6 @@ export default {
       opacity: 1;
     }
   }
-
-  // .footer {
-  //   position: absolute;
-  //   bottom: 0;
-  // }
 }
 @media screen and (min-width: 767px) {
   .main-container {

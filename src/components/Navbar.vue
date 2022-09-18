@@ -110,13 +110,14 @@ export default {
     justify-content: space-around;
     align-items: center;
     position: relative;
-    width: 60%;
+    margin: 0 20px;
+    width: 40%;
     height: 25px;
     border: 1px var(--font-blue) solid;
     border-radius: 20px;
 
     .searcher {
-      width: 70%;
+      width: 40%;
       background: var(--transparent);
       border: none;
       color: var(--font-yellow);
@@ -142,6 +143,11 @@ export default {
     margin: 0 20px 0 0;
     color: var(--font-yellow);
     cursor: pointer;
+  }
+
+  .hamburger-icon {
+    position: absolute;
+    right: 0;
   }
 
   .list {
@@ -231,6 +237,10 @@ export default {
     .search {
       margin: 0;
       width: 50%;
+
+      .searcher {
+        width: 70%;
+      }
     }
 
     .hamburger-icon {

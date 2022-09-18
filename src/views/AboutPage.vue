@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <Navbar />
-    <main class="main-wrapper">
+    <main class="main-wrapper scrollbar">
       <ul class="function">
         <li class="function-intro">
           <h3 class="intro">
@@ -40,7 +40,7 @@
         </li>
       </ul>
     </main>
-    <Footer class="footer" />
+    <Footer class="footer relocated" />
   </div>
 </template>
 
@@ -92,6 +92,8 @@ export default {
     align-items: center;
     width: 100%;
     margin: 40px 0 20px 0;
+    max-height: 500px;
+    overflow-y: scroll;
 
     .function {
       .intro {
@@ -107,9 +109,16 @@ export default {
       }
     }
   }
-  .footer {
-    position: absolute;
-    bottom: 0;
+  .scrollbar {
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
+  }
+  .footer.relocated {
+    all: unset;
+    width: 100%;
+    color: $purple;
+    background: var(--body-bg);
   }
 }
 </style>
