@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomePage from '../views/HomePage.vue'
 import NotFound from '../views/NotFound.vue'
+
+import store from './../store'
 
 Vue.use(VueRouter)
 
@@ -9,7 +10,12 @@ const routes = [
   {
     path: '/',
     name: 'root',
-    component: HomePage
+    redirect: '/homepage'
+  },
+  {
+    path: '/homepage/:id',
+    name: 'home-image',
+    component: () => import('../views/ImgPage.vue')
   },
   {
     path: '/homepage',
@@ -20,6 +26,11 @@ const routes = [
     path: '/about',
     name: 'about-page',
     component: () => import('../views/AboutPage.vue')
+  },
+  {
+    path: '/favorite/:id',
+    name: 'image-favorite',
+    component: () => import('../views/ImgPage.vue')
   },
   {
     path: '/favorite',
@@ -35,6 +46,13 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'image-favorite' || to.name === "home-image") {
+    store.dispatch('visitImagePage')
+  }
+  next()
 })
 
 export default router

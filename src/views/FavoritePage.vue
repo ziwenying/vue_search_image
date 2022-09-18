@@ -7,9 +7,14 @@
       style="scroll-behavior: smooth"
       ref="infinite_list"
     >
+      <h2 v-if="noImg" class="no-image">還沒有收藏唷！</h2>
+      <h4 v-if="noImg" class="no-image">
+        快將喜歡的圖片加入收藏吧 (੭ु´͈ ᐜ `͈)੭ु⁾⁾
+      </h4>
       <!-- v-for -->
       <div class="column">
         <div v-for="image in favoriteImages" :key="image.id" class="img-outer">
+          <div @click.stop="showImage(image)" class="blank"></div>
           <img :src="image.regular" alt="image" class="image" />
           <i
             v-if="image.isFavorite === false"
@@ -27,9 +32,8 @@
         </div>
       </div>
     </main>
-    <Footer />
-    <ImgModal />
-    <a id="go-top" @click="goTop">
+    <Footer class="footer" />
+    <a v-if="!noImg" id="go-top" @click="goTop">
       <img class="arrow" src="@/assets/image/icon-gotop.png" alt="go-top" />
     </a>
   </div>
@@ -39,8 +43,8 @@
 import Spinner from "../components/Spinner.vue";
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
-import ImgModal from "../components/ImgModal.vue";
 
+import { Toast } from "./../utils/helpers";
 import { mapState } from "vuex";
 import { fromNowFilter } from "./../utils/mixins";
 
@@ -51,7 +55,6 @@ export default {
     Spinner,
     Navbar,
     Footer,
-    ImgModal,
   },
   computed: {
     ...mapState(["darkMode"]),
@@ -60,30 +63,83 @@ export default {
     return {
       favoriteImages: [],
       keyword: "",
+      noImg: true,
+      isLoading: true,
     };
   },
   created() {
-    this.favoriteImages = JSON.parse(localStorage.getItem("STORAGE_Img")) || [];
+    this.fetchFavoriteImg();
   },
   mounted() {
     if (this.darkMode) {
       this.toggleMode();
     }
   },
+  watch: {
+    favoriteImages() {
+      this.saveStorage();
+    },
+  },
   methods: {
+    fetchFavoriteImg() {
+      this.isLoading = true;
+      this.favoriteImages =
+        JSON.parse(localStorage.getItem("STORAGE_Img")) || [];
+      this.isLoading = false;
+      if (!this.favoriteImages.length) {
+        this.noImg = true;
+      } else {
+        this.noImg = false;
+      }
+    },
     addFavorite(imageId) {
       this.favoriteImages = this.favoriteImages.map((fa_image) => {
         return fa_image.id === imageId
           ? { ...fa_image, isFavorite: true }
           : fa_image;
       });
-    },
-    deleteFavorite(imageId) {
-      this.favoriteImages = this.favoriteImages.map((fa_image) => {
-        return fa_image.id === imageId
-          ? { ...fa_image, isFavorite: false }
-          : fa_image;
+      Toast.fire({
+        icon: "success",
+        title: "加入囉！",
       });
+    },
+    async deleteFavorite(imageId) {
+      Toast.fire({
+        title: "確定要刪除檔案?",
+        icon: "warning",
+        showConfirmButton: true,
+        confirmButtonColor: "#d33",
+        confirmButtonText: "是的，我要刪除!",
+        showCancelButton: true,
+        cancelButtonColor: "#444444",
+        cancelButtonText: "取消",
+      }).then((result) => {
+        if (result.value) {
+          this.favoriteImages = this.favoriteImages.map((fa_image) => {
+            return fa_image.id === imageId
+              ? { ...fa_image, isFavorite: false }
+              : fa_image;
+          });
+          this.favoriteImages = this.favoriteImages.filter((fa_image) => {
+            return fa_image.id !== imageId;
+          });
+          Toast.fire({
+            icon: "success",
+            title: "刪除囉！",
+          });
+        }
+      });
+    },
+    showImage(oneImage) {
+      this.$store.commit("getOneImage", oneImage);
+      // open new page
+      let routeUrl = this.$router.resolve({
+        path: `/favorite/${oneImage.id}`,
+      });
+      window.open(routeUrl.href, "_blank");
+    },
+    saveStorage() {
+      localStorage.setItem("STORAGE_Img", JSON.stringify(this.favoriteImages));
     },
     goTop() {
       const scrollTop = this.$refs.infinite_list;
@@ -110,6 +166,7 @@ export default {
   max-width: 1140px;
   margin: 0 auto;
   background: var(--body-bg);
+
   .spinner {
     position: absolute;
     top: 50%;
@@ -122,19 +179,35 @@ export default {
     overflow-y: scroll;
     max-height: 914px;
 
+    .no-image {
+      text-align: center;
+      height: 200px;
+      color: var(--font-blue);
+      margin: 5px;
+    }
+
     .column {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       row-gap: 24px;
+
       .img-outer {
         position: relative;
         width: 100%;
         height: 100%;
         border: 5px var(--transparent) solid;
         border-radius: 5px;
+
         .image {
           border-radius: 2px;
-          cursor: zoom-in;
+        }
+        .blank {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
         }
         .icon {
           position: absolute;
@@ -143,6 +216,7 @@ export default {
           padding: 1px;
           cursor: pointer;
           z-index: 1;
+
           &.red {
             color: $red;
           }
@@ -168,10 +242,11 @@ export default {
         }
       }
     }
-
     .img-outer:hover {
       border: 5px #efceff79 solid;
       border-radius: 5px;
+      cursor: zoom-in;
+
       .description {
         display: block;
         width: 100%;
@@ -186,7 +261,6 @@ export default {
       width: 0px;
     }
   }
-
   #go-top {
     position: fixed;
     right: 20px;
@@ -194,9 +268,11 @@ export default {
     border: 1px var(--font-blue) solid;
     border-radius: 50px;
     background: $white;
+    cursor: pointer;
     opacity: 0.3;
     z-index: 99;
     transition: all 0.5s;
+
     .arrow {
       margin: 5px;
       width: 50px;
@@ -207,6 +283,7 @@ export default {
     }
   }
 }
+
 @media screen and (min-width: 767px) {
   .main-container {
     .img-wrapper {

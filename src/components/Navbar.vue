@@ -110,25 +110,27 @@ export default {
     justify-content: space-around;
     align-items: center;
     position: relative;
-    width: 60%;
+    margin: 0 20px;
+    width: 40%;
     height: 25px;
     border: 1px var(--font-blue) solid;
     border-radius: 20px;
 
     .searcher {
-      width: 70%;
+      width: 40%;
       background: var(--transparent);
       border: none;
       color: var(--font-yellow);
     }
-
     .icon-wrapper {
       display: flex;
       margin: 0 10px 0 0;
+
       .deleted,
       .fa-search {
         font-size: 14px;
         margin: 0 0 0 10px;
+
         &:hover {
           cursor: pointer;
           text-decoration: underline;
@@ -136,14 +138,16 @@ export default {
       }
     }
   }
-
   .hamburger-icon,
   .fa-bars {
     margin: 0 20px 0 0;
     color: var(--font-yellow);
     cursor: pointer;
   }
-
+  .hamburger-icon {
+    position: absolute;
+    right: 0;
+  }
   .list {
     position: absolute;
     top: 100%;
@@ -159,13 +163,13 @@ export default {
 
       .item-link {
         color: var(--font-blue);
+
         &:hover {
           color: var(--font-yellow);
           text-decoration: underline;
         }
       }
     }
-
     .item:nth-child(2) {
       display: flex;
       justify-content: center;
@@ -175,12 +179,12 @@ export default {
       .fa-chevron-down {
         margin: 3px;
         font-size: 16px;
+
         &:hover {
           color: var(--font-yellow);
           cursor: pointer;
         }
       }
-
       .item-child-outer {
         position: absolute;
         top: 130%;
@@ -194,29 +198,26 @@ export default {
         }
       }
     }
-
     .item.favorite {
       padding: 90px 30px 10px 30px;
     }
-
     .item-icon {
       margin: 10px 0 0 0;
       padding: 10px 0 20px 0;
 
       .icon {
         margin: 5px 10px;
+
         &:hover {
           color: var(--font-yellow);
           cursor: pointer;
         }
       }
-
       .fa-sun {
         display: none;
       }
     }
   }
-
   .icon-toggle:checked ~ .list {
     transform: scale(1, 1);
   }
@@ -231,12 +232,14 @@ export default {
     .search {
       margin: 0;
       width: 50%;
-    }
 
+      .searcher {
+        width: 70%;
+      }
+    }
     .hamburger-icon {
       display: none;
     }
-
     .list {
       all: unset;
       display: flex;
@@ -246,7 +249,6 @@ export default {
         display: flex;
         align-items: center;
       }
-
       .item:nth-child(2) {
         .item-child-outer {
           display: none;
@@ -257,7 +259,6 @@ export default {
           }
         }
       }
-
       .show.item:nth-child(2) {
         &:hover {
           .item-child-outer {
@@ -268,11 +269,9 @@ export default {
           }
         }
       }
-
       .item.favorite {
         padding: 10px 30px;
       }
-
       .item-icon {
         margin: 0;
         padding: 0;
@@ -281,7 +280,6 @@ export default {
         }
       }
     }
-
     .cp-logo {
       position: absolute;
       top: 100%;

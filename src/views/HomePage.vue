@@ -18,6 +18,7 @@
       <!-- v-for -->
       <div class="column">
         <div v-for="image in firstColumnImg" :key="image.id" class="img-outer">
+          <div @click.stop="showImage(image)" class="blank"></div>
           <img :src="image.regular" alt="image" class="image" />
           <i
             v-if="image.isFavorite === false"
@@ -36,6 +37,7 @@
       </div>
       <div class="column">
         <div v-for="image in secondColumnImg" :key="image.id" class="img-outer">
+          <div @click.stop="showImage(image)" class="blank"></div>
           <img :src="image.regular" alt="image" class="image" />
           <i
             v-if="image.isFavorite === false"
@@ -54,6 +56,7 @@
       </div>
       <div class="column">
         <div v-for="image in thirdColumnImg" :key="image.id" class="img-outer">
+          <div @click.stop="showImage(image)" class="blank"></div>
           <img :src="image.regular" alt="image" class="image" />
           <i
             v-if="image.isFavorite === false"
@@ -87,6 +90,7 @@ import SearchNavPills from "../components/SearchNavPills.vue";
 import Footer from "../components/Footer.vue";
 import imagesAPI from "./../apis/image";
 
+import { Toast } from "./../utils/helpers";
 import { mapState } from "vuex";
 import { fromNowFilter } from "./../utils/mixins";
 
@@ -139,14 +143,14 @@ export default {
       const imageContainer = this.$refs.infinite_list;
       const loadingObserver = this.$refs.observer;
 
-      // 設定在什麼情況下觸發 callback 函式
+      // 觸發 callback 函式的條件
       const options = {
         root: imageContainer,
         rootMargin: "0px 0px 200px 0px",
         threshold: 0,
       };
 
-      // callback 函式
+      // callback
       const callback = ([entry]) => {
         if (entry && entry.isIntersecting) {
           if (!this.keyword) {
@@ -166,7 +170,7 @@ export default {
         }
       };
 
-      // 創建一個 observer
+      // build observer
       let observer = new IntersectionObserver(callback, options);
 
       // 觀察目標元素
@@ -196,7 +200,8 @@ export default {
             isFavorite: false,
           };
         });
-        // 確認新撈的圖有無加入最愛
+
+        // 確認新撈的圖有無加入收藏
         if (this.favoriteImages.length) {
           for (let i = 0; i < this.favoriteImages.length; i++) {
             this.allImages = this.allImages.map((image) => {
@@ -209,6 +214,7 @@ export default {
             });
           }
         }
+
         // assign images
         this.firstColumnImg = [
           ...this.firstColumnImg,
@@ -231,7 +237,10 @@ export default {
         this.isLoading = false;
       } catch (error) {
         this.isLoading = false;
-        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得圖片，請稍後再試",
+        });
       }
     },
     async searchColorSort({ color, sort, page, keyword }, reload) {
@@ -274,7 +283,10 @@ export default {
         });
 
         if (this.allImages.length === 0) {
-          alert("沒有符合條件的圖片，請重新搜尋");
+          Toast.fire({
+            icon: "warning",
+            title: "沒有符合條件的圖片，請重新搜尋",
+          });
         }
 
         // 新撈的圖全部加上 isFavorite: false
@@ -284,7 +296,7 @@ export default {
             isFavorite: false,
           };
         });
-        // 確認新撈的圖有無加入最愛
+        // 確認新撈的圖有無加入收藏
         if (this.favoriteImages.length) {
           for (let i = 0; i < this.favoriteImages.length; i++) {
             this.allImages = this.allImages.map((image) => {
@@ -299,7 +311,6 @@ export default {
         }
 
         // assign images
-
         if (!reload) {
           this.firstColumnImg = [];
           this.secondColumnImg = [];
@@ -329,7 +340,10 @@ export default {
         this.isLoading = false;
       } catch (error) {
         this.isLoading = false;
-        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得圖片，請稍後再試",
+        });
       }
     },
     addFavorite(image, columnIndex) {
@@ -366,13 +380,19 @@ export default {
       );
 
       if (filterFavoriteImages) {
-        alert("已經存在最愛清單中");
+        Toast.fire({
+          icon: "error",
+          title: "已經存在收藏清單，請點選其它圖片",
+        });
       } else {
         this.favoriteImages = [
           ...this.favoriteImages,
           { ...image, isFavorite: true },
         ];
-        alert("加入囉");
+        Toast.fire({
+          icon: "success",
+          title: "加入囉！",
+        });
       }
     },
     deleteFavorite(imageId, columnIndex) {
@@ -382,7 +402,7 @@ export default {
           ? { ...fa_image, isFavorite: false }
           : { ...fa_image };
       });
-      // 從最愛中刪除
+      // 從收藏中刪除
       this.favoriteImages = this.favoriteImages.filter((fa_image) => {
         return fa_image.id !== imageId;
       });
@@ -405,7 +425,18 @@ export default {
             : thirdImage;
         });
       }
-      alert("刪除囉");
+      Toast.fire({
+        icon: "success",
+        title: "刪除囉！",
+      });
+    },
+    showImage(oneImage) {
+      this.$store.commit("getOneImage", oneImage);
+      // open new page
+      let routeUrl = this.$router.resolve({
+        path: `/favorite/${oneImage.id}`,
+      });
+      window.open(routeUrl.href, "_blank");
     },
     saveStorage() {
       localStorage.setItem("STORAGE_Img", JSON.stringify(this.favoriteImages));
@@ -435,6 +466,7 @@ export default {
   max-width: 1140px;
   margin: 0 auto;
   background: var(--body-bg);
+
   .spinner {
     position: absolute;
     top: 50%;
@@ -444,7 +476,7 @@ export default {
   .img-wrapper {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-column-gap: 24px;
+    grid-column-gap: 5px;
     text-align: center;
     margin: 30px auto 0 auto;
     padding: 20px 0 60px 0;
@@ -456,7 +488,8 @@ export default {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       align-items: start;
-      row-gap: 24px;
+      row-gap: 5px;
+
       .img-outer {
         position: relative;
         width: 100%;
@@ -466,6 +499,14 @@ export default {
 
         .image {
           border-radius: 2px;
+        }
+        .blank {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
         }
         .icon {
           position: absolute;
@@ -485,6 +526,7 @@ export default {
           position: absolute;
           bottom: 0;
           display: none;
+
           .text {
             position: absolute;
             bottom: 0;
@@ -499,16 +541,15 @@ export default {
         }
       }
     }
-
     .observer {
       width: 50px;
       height: 50px;
     }
-
     .img-outer:hover {
       border: 5px #efceff79 solid;
       border-radius: 5px;
       cursor: zoom-in;
+
       .description {
         display: block;
         width: 100%;
@@ -523,7 +564,6 @@ export default {
       width: 0px;
     }
   }
-
   #go-top {
     position: fixed;
     right: 20px;
@@ -531,6 +571,7 @@ export default {
     border: 1px var(--font-blue) solid;
     border-radius: 50px;
     background: $white;
+    cursor: pointer;
     opacity: 0.3;
     z-index: 99;
     transition: all 0.5s;
@@ -544,11 +585,17 @@ export default {
     }
   }
 }
+
 @media screen and (min-width: 767px) {
   .main-container {
     .img-wrapper {
       margin: 50px auto 0 auto;
       width: 95%;
+      grid-column-gap: 24px;
+
+      .column {
+        row-gap: 24px;
+      }
     }
   }
 }

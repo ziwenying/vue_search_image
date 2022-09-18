@@ -7,10 +7,6 @@
 <script>
 export default {
   name: "Footer",
-  data() {
-    return {};
-  },
-  methods: {},
 };
 </script>
 
@@ -23,8 +19,9 @@ export default {
   width: 100%;
   color: $purple;
   background: var(--body-bg);
+
   .footer-text {
-    margin: 5px 20px;
+    padding: 10px 0 0 0;
     text-align: center;
   }
 }
