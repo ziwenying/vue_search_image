@@ -78,6 +78,7 @@ export default {
         sort: "",
         page: 1,
         keyword: this.keyword,
+        search: true,
       });
     },
     clear() {

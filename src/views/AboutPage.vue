@@ -7,6 +7,10 @@
           <h3 class="intro">
             本網頁為簡易圖庫，串接 unsplash api，具有搜尋、收藏等功能。
           </h3>
+          <h3 class="intro">
+            unsplash api
+            有限制每小時請求次數，如無法請求圖片，可以過一小時後再嘗試。
+          </h3>
         </li>
         <li class="function-intro">
           <h5 class="title">一、導覽列：</h5>
