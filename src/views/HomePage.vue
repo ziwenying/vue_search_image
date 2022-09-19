@@ -118,6 +118,7 @@ export default {
         page: 1,
         color: "black_and_white",
         sort: "relevance",
+        search: false,
       },
       keyword: "",
       isLoading: true,
@@ -155,7 +156,11 @@ export default {
         if (entry && entry.isIntersecting) {
           if (!this.keyword) {
             this.fetchImages();
-          } else if (this.keyword && this.condition.page <= 29) {
+          } else if (
+            this.keyword &&
+            this.condition.page <= 29 &&
+            this.condition.search !== true
+          ) {
             this.condition.page += 1;
             this.searchColorSort(
               {
@@ -166,7 +171,9 @@ export default {
               },
               true
             );
+            this.condition.search = false;
           }
+          this.condition.search = false;
         }
       };
 
@@ -272,6 +279,7 @@ export default {
         if (response.status !== 200) {
           throw new Error("無法取得圖片，請稍後再試");
         }
+
         this.allImages = response.data.results.map((image) => {
           return {
             id: image.id,
@@ -285,7 +293,7 @@ export default {
         if (this.allImages.length === 0) {
           Toast.fire({
             icon: "warning",
-            title: "沒有符合條件的圖片，請重新搜尋，如未輸入關鍵字，請輸入",
+            title: "無符合圖片，如未輸入關鍵字，請輸入",
           });
         }
 
