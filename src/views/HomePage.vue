@@ -356,7 +356,10 @@ export default {
     },
     addFavorite(image, columnIndex) {
       if (this.favoriteImages.length > 30) {
-        alert("最多只能收藏 30 張唷");
+        Toast.fire({
+          icon: "warning",
+          title: "最多只能收藏 30 張唷",
+        });
         return;
       } else if (!this.favoriteImages.length) {
         this.favoriteImages = [{ ...image, isFavorite: true }];
