@@ -143,12 +143,7 @@ export default {
 
       if (color) {
         this.$store.commit("changeColorCondition", color);
-      }
-
-      if (sort) {
-        if (!this.keyword) {
-          alert("請輸入關鍵字");
-        }
+      } else if (sort) {
         this.$store.commit("changeSortCondition", sort);
       }
       filterColorSort();

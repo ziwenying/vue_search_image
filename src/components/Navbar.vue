@@ -5,7 +5,7 @@
     </router-link>
 
     <div v-if="$route.name === 'home-page' || $route.name === 'root' || $route.name === 'not-found'" class="search">
-      <input v-model="keyword" @keyup.enter="afterClickSearch" class="searcher" type="text">
+      <input v-model="keyword" @keyup.enter="afterClickSearch" class="searcher" placeholder="Please enter keywords in English" type="text">
       <div class="icon-wrapper">
         <i @click="clear" class="fas fa-times deleted"></i>
         <i @click.prevent.stop="afterClickSearch"  class="fas fa-search"></i>
@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import { Toast } from "./../utils/helpers";
+
 export default {
   name: "Navbar",
   data() {
@@ -65,7 +67,10 @@ export default {
     afterClickSearch() {
       this.keyword = this.keyword.trim(" ").toLowerCase().replace(" ", ",");
       if (!this.keyword) {
-        alert(`請輸入關鍵字`);
+        Toast.fire({
+          icon: "error",
+          title: "請輸入有效關鍵字",
+        });
         this.$emit("fetch-random-image");
       }
       this.$emit("after-click-search", {

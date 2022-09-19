@@ -285,7 +285,7 @@ export default {
         if (this.allImages.length === 0) {
           Toast.fire({
             icon: "warning",
-            title: "沒有符合條件的圖片，請重新搜尋",
+            title: "沒有符合條件的圖片，請重新搜尋，如未輸入關鍵字，請輸入",
           });
         }
 
