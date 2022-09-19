@@ -6,7 +6,7 @@
 ## 【介紹】
 
 圖庫，串接 unsplash api，具有搜尋、收藏等功能。
-**已佈署 URL：**
+**已佈署 URL：[部署網站試用點此](https://ziwenying.com/vue_search_image/#/homepage)**
 
 - **導覽列：**
   可以切換 dark mode。
